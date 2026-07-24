@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexHealth EMR — AI Medical Copilot</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOP HEADER / NAV -->
+  <header class="app-header">
+    <div class="header-left">
+      <div id="hospital-logo" class="hospital-logo">
+        <i class="fa-solid fa-hospital-user logo-icon"></i>
+      </div>
+      <div class="header-brand">
+        <h1 id="app-title" class="app-title">ApexHealth EMR</h1>
+        <span class="app-subtitle">AI Medical Copilot & Voice Assistant v2.5</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="time-widget">
+        <i class="fa-regular fa-clock"></i>
+        <span id="live-clock" class="live-clock">Loading clock...</span>
+      </div>
+      
+      <!-- Notifications Icon & Dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <div id="nav-notifications" class="nav-icon-button" title="View Notifications">
+          <i class="fa-regular fa-bell"></i>
+          <span id="notification-badge" class="badge">3</span>
+        </div>
+
+        <div id="notification-panel" class="dropdown-panel hidden">
+          <div class="panel-header">
+            <h4>Clinical Notifications</h4>
+            <span class="panel-subtitle">3 Unread</span>
+          </div>
+          <div class="panel-body">
+            <div class="notification-item unread">
+              <i class="fa-solid fa-vial-virus notif-icon lab"></i>
+              <div class="notif-content">
+                <p><strong>Lab Result Ready:</strong> CBC & CRP report for Eleanor Vance (MRN-90823411)</p>
+                <span class="notif-time">10 mins ago</span>
+              </div>
+            </div>
+            <div class="notification-item unread">
+              <i class="fa-solid fa-pills notif-icon pharmacy"></i>
+              <div class="notif-content">
+                <p><strong>Pharmacy Alert:</strong> Amoxicillin 625mg stock updated in Main Dispensary</p>
+                <span class="notif-time">25 mins ago</span>
+              </div>
+            </div>
+            <div class="notification-item unread">
+              <i class="fa-solid fa-brain-circuit notif-icon ai"></i>
+              <div class="notif-content">
+                <p><strong>Copilot Telemetry:</strong> Voice Synthesis & Speech Recognition engine active</p>
+                <span class="notif-time">1 hour ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <button type="button" id="mark-all-read-btn" class="btn-text">Mark all as read</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Profile & Dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <div id="user-profile" class="user-profile">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=100&auto=format&fit=crop&q=80" alt="Doctor Avatar" class="profile-avatar" />
+          <div class="profile-info">
+            <span class="doc-name">Dr. Alexander Vance</span>
+            <span class="doc-role">Attending Physician</span>
+          </div>
+          <i class="fa-solid fa-chevron-down profile-arrow"></i>
+        </div>
+
+        <div id="profile-dropdown" class="dropdown-panel profile-menu hidden">
+          <div class="menu-user-header">
+            <strong>Dr. Alexander Vance, M.D.</strong>
+            <span>Internal Medicine — Staff ID #8841</span>
+          </div>
+          <hr class="menu-divider">
+          <ul class="menu-list">
+            <li><a href="#" id="opt-view-profile"><i class="fa-solid fa-user-doctor"></i> Physician Profile</a></li>
+            <li><a href="#" id="opt-dept-switch"><i class="fa-solid fa-hospital"></i> Department: Internal Medicine</a></li>
+            <li><a href="#" id="opt-emr-settings"><i class="fa-solid fa-gear"></i> EMR Copilot Settings</a></li>
+            <hr class="menu-divider">
+            <li><a href="#" id="opt-logout" class="text-danger"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER: 2-COLUMN RESPONSIVE LAYOUT -->
+  <div class="main-container">
+    
+    <!-- LEFT COLUMN: Patient Demographics & Clinical Form -->
+    <main class="clinical-content">
+
+      <!-- Patient Demographics Banner -->
+      <section class="patient-card" id="patient-card">
+        <div class="patient-card-header">
+          <div class="patient-main-info">
+            <span class="patient-badge">INPATIENT</span>
+            <h2 id="patient-name" class="patient-name">Eleanor Vance</h2>
+            <span class="patient-meta" id="patient-id">MRN-90823411</span>
+          </div>
+          <div class="patient-actions flex-gap">
+            <button type="button" id="speak-patient-btn" class="btn-secondary btn-sm" title="Listen to Patient Audio Summary">
+              <i class="fa-solid fa-volume-high"></i> Listen Summary
+            </button>
+            <div class="patient-vitals-quick" id="patient-vitals">
+              <div class="vital-item">
+                <span class="vital-label">BP</span>
+                <span class="vital-val">120/80 mmHg</span>
+              </div>
+              <div class="vital-item">
+                <span class="vital-label">HR</span>
+                <span class="vital-val">72 bpm</span>
+              </div>
+              <div class="vital-item">
+                <span class="vital-label">SpO2</span>
+                <span class="vital-val">98%</span>
+              </div>
+              <div class="vital-item">
+                <span class="vital-label">Temp</span>
+                <span class="vital-val">98.6 °F</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="patient-card-body">
+          <div class="info-field">
+            <label>Age / Gender</label>
+            <div id="patient-age-gender" class="info-value">45 Y / Female</div>
+          </div>
+          <div class="info-field">
+            <label>Blood Group</label>
+            <div id="patient-blood-group" class="info-value">O Positive</div>
+          </div>
+          <div class="info-field">
+            <label>Attending Doctor</label>
+            <div class="info-value">Dr. A. Vance (Internal Med)</div>
+          </div>
+          <div class="info-field">
+            <label>Admission Date</label>
+            <div class="info-value">24-Jul-2026</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Clinical Form -->
+      <form id="clinical-form" class="clinical-form" onsubmit="return false;">
+        
+        <!-- Chief Complaints Card -->
+        <div class="form-card">
+          <div class="form-card-header flex-between">
+            <div class="header-title">
+              <i class="fa-solid fa-notes-medical field-icon"></i>
+              <h3>Chief Complaints</h3>
+            </div>
+            <button type="button" id="speak-complaint-btn" class="btn-icon-secondary" title="Read Complaints Aloud"><i class="fa-solid fa-volume-high"></i></button>
+          </div>
+          <div class="form-card-body">
+            <textarea id="complaint-input" name="complaint" class="form-control" rows="3" placeholder="e.g. Patient presents with high fever, dry cough, and shortness of breath for 3 days..."></textarea>
+          </div>
+        </div>
+
+        <!-- Clinical Diagnosis Card -->
+        <div class="form-card">
+          <div class="form-card-header flex-between">
+            <div class="header-title">
+              <i class="fa-solid fa-stethoscope field-icon"></i>
+              <h3>Provisional & Final Diagnosis</h3>
+            </div>
+            <button type="button" id="speak-diagnosis-btn" class="btn-icon-secondary" title="Read Diagnosis Aloud"><i class="fa-solid fa-volume-high"></i></button>
+          </div>
+          <div class="form-card-body">
+            <textarea id="diagnosis-input" name="diagnosis" class="form-control" rows="3" placeholder="e.g. Acute Bronchitis / Secondary Bacterial Infection..."></textarea>
+          </div>
+        </div>
+
+        <!-- Investigations & Diagnostic Tests Card -->
+        <div class="form-card">
+          <div class="form-card-header flex-between">
+            <div class="header-title">
+              <i class="fa-solid fa-vial-virus field-icon"></i>
+              <h3>Investigations & Lab Requests</h3>
+            </div>
+            <button type="button" id="speak-investigation-btn" class="btn-icon-secondary" title="Read Labs Aloud"><i class="fa-solid fa-volume-high"></i></button>
+          </div>
+          <div class="form-card-body">
+            <textarea id="investigation-input" name="investigation" class="form-control" rows="3" placeholder="e.g. Chest X-Ray (PA View), Complete Blood Count (CBC), CRP Level..."></textarea>
+          </div>
+        </div>
+
+        <!-- Medication Matrix Card -->
+        <div class="form-card">
+          <div class="form-card-header flex-between">
+            <div class="header-title">
+              <i class="fa-solid fa-pills field-icon"></i>
+              <h3>Prescribed Medications</h3>
+            </div>
+            <div class="flex-gap">
+              <button type="button" id="speak-meds-btn" class="btn-secondary btn-sm" title="Read Prescriptions Aloud">
+                <i class="fa-solid fa-volume-high"></i> Read Meds
+              </button>
+              <button type="button" id="add-med-btn" class="btn-secondary btn-sm">
+                <i class="fa-solid fa-plus"></i> Add Row
+              </button>
+            </div>
+          </div>
+          <div class="form-card-body p-0">
+            <div class="table-responsive">
+              <table id="medication-table" class="medication-table">
+                <thead>
+                  <tr>
+                    <th>Medicine Name</th>
+                    <th>Dose</th>
+                    <th>Frequency</th>
+                    <th>Duration</th>
+                    <th style="width: 50px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="med-table-body">
+                  <!-- Default Initial Row -->
+                  <tr>
+                    <td><input type="text" name="medicine_name[]" class="form-control med-name-input" placeholder="e.g. Amoxicillin"></td>
+                    <td><input type="text" name="dose[]" class="form-control med-dose-input" placeholder="500 mg"></td>
+                    <td><input type="text" name="frequency[]" class="form-control med-freq-input" placeholder="1-0-1 (BD)"></td>
+                    <td><input type="text" name="duration[]" class="form-control med-dur-input" placeholder="5 days"></td>
+                    <td><button type="button" class="btn-icon-danger remove-row-btn" title="Remove"><i class="fa-solid fa-trash-can"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctor Remarks Card -->
+        <div class="form-card">
+          <div class="form-card-header flex-between">
+            <div class="header-title">
+              <i class="fa-solid fa-user-doctor field-icon"></i>
+              <h3>Doctor Remarks & Advice</h3>
+            </div>
+            <button type="button" id="speak-remarks-btn" class="btn-icon-secondary" title="Read Remarks Aloud"><i class="fa-solid fa-volume-high"></i></button>
+          </div>
+          <div class="form-card-body">
+            <textarea id="remarks-input" name="remarks" class="form-control" rows="3" placeholder="e.g. Drink plenty of fluids, rest, and review after 5 days..."></textarea>
+          </div>
+        </div>
+
+        <!-- Form Actions Footer -->
+        <div class="form-actions-bar">
+          <button type="reset" id="reset-btn" class="btn-outline">Reset Form</button>
+          <button type="submit" id="save-emr-btn" class="btn-primary">
+            <i class="fa-solid fa-floppy-disk"></i> Save to EMR Record
+          </button>
+        </div>
+
+      </form>
+    </main>
+
+    <!-- RIGHT COLUMN: Sticky AI Copilot Sidebar -->
+    <aside id="copilot-sidebar" class="copilot-sidebar">
+      
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          <i class="fa-solid fa-brain-circuit copilot-logo-icon"></i>
+          <div>
+            <h2>AI Assistant</h2>
+            <p>Prescription OCR & Voice Telemetry</p>
+          </div>
+        </div>
+        <div id="telemetry-badge" class="telemetry-badge online">
+          <span class="pulse-dot"></span> Telemetry Active
+        </div>
+      </div>
+
+      <!-- Prescription Scanner Dropzone Card -->
+      <div class="copilot-card">
+        <div class="copilot-card-title">
+          <i class="fa-solid fa-file-prescription"></i>
+          <span>Document OCR Engine</span>
+        </div>
+
+        <div id="drop-zone" class="upload-dropzone">
+          <input type="file" id="file-input" name="prescription_image" accept="image/*" class="file-input-hidden">
+          <div class="dropzone-content">
+            <div class="dropzone-icon">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <p class="dropzone-prompt">Drag & Drop Prescription Image</p>
+            <span class="dropzone-sub">Supports PNG, JPG, JPEG, WEBP</span>
+            <button type="button" class="btn-secondary btn-sm dropzone-browse-btn" onclick="document.getElementById('file-input').click();">
+              Browse File
+            </button>
+          </div>
+          <div id="file-preview-info" class="file-preview-info hidden">
+            <i class="fa-solid fa-image"></i>
+            <span id="selected-file-name">image.png</span>
+            <button type="button" id="clear-file-btn" class="btn-text-danger" title="Remove File"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+
+        <!-- OCR Scan Progress Bar -->
+        <div id="scan-progress-container" class="scan-progress-container hidden">
+          <div class="progress-info">
+            <span id="progress-text" class="progress-text">Processing OpenCV pipeline...</span>
+            <span id="progress-percentage" class="progress-percentage">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <button type="button" id="scan-btn" class="btn-primary btn-block">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Scan & Extract Fields
+        </button>
+      </div>
+
+      <!-- Interactive Voice Assistant Card -->
+      <div class="copilot-card">
+        <div class="copilot-card-title flex-between">
+          <div>
+            <i class="fa-solid fa-headset"></i>
+            <span>Interactive Voice AI Agent</span>
+          </div>
+          <span id="voice-status-badge" class="voice-status standby">STANDBY</span>
+        </div>
+        
+        <p class="copilot-desc">Click <strong>Dictate &amp; Listen</strong> to speak aloud, or type below and press <strong>Fill Columns</strong> to let the AI Agent auto-fill all form fields.</p>
+        
+        <div class="voice-controls-grid">
+          <button type="button" id="mic-btn" class="btn-voice">
+            <i class="fa-solid fa-microphone mic-icon"></i>
+            <span id="mic-btn-label">Dictate & Listen</span>
+          </button>
+          <button type="button" id="speak-summary-btn" class="btn-voice-speak">
+            <i class="fa-solid fa-circle-play"></i>
+            <span>Read EMR Aloud</span>
+          </button>
+        </div>
+
+        <!-- Voice Text Input Box -->
+        <div class="dictation-input-group">
+          <input type="text" id="voice-input-text" class="form-control" placeholder="Speak or type: e.g. Prescribe Amoxicillin 500mg BD for 5 days...">
+          <button type="button" id="process-voice-btn" class="btn-primary btn-sm">
+            <i class="fa-solid fa-robot"></i> Fill Columns
+          </button>
+        </div>
+
+        <!-- Quick Voice Dictation Presets -->
+        <div class="preset-pills">
+          <span class="preset-label">Quick Voice Presets:</span>
+          <button type="button" class="pill-btn" onclick="applyPresetVoice('Prescribe Amoxicillin 500mg BD for 5 days')">Amoxicillin 500mg</button>
+          <button type="button" class="pill-btn" onclick="applyPresetVoice('Prescribe Paracetamol 625mg TDS for 3 days')">Paracetamol 625mg</button>
+          <button type="button" class="pill-btn" onclick="applyPresetVoice('Complaint: High fever and dry cough for 3 days')">Chief Complaints</button>
+          <button type="button" class="pill-btn" onclick="applyPresetVoice('Diagnosis: Acute Bronchitis')">Diagnosis</button>
+        </div>
+
+        <!-- Voice Speech Transcript & Response Log -->
+        <div id="voice-transcript-box" class="voice-transcript-box">
+          <div class="transcript-header">
+            <i class="fa-solid fa-waveform-lines"></i>
+            <span>Voice Assistant Log:</span>
+          </div>
+          <p id="voice-transcript-text" class="transcript-text">Voice Assistant ready. Dictate notes or click preset pills above.</p>
+        </div>
+        
+        <div id="voice-waves" class="voice-waves hidden">
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+        </div>
+      </div>
+
+      <!-- AI Telemetry & Insights Box -->
+      <div class="copilot-card telemetry-card">
+        <div class="copilot-card-title">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Engine Telemetry & Stats</span>
+        </div>
+        <div class="telemetry-grid">
+          <div class="telemetry-item">
+            <span class="telemetry-label">OCR Engine</span>
+            <span id="ocr-engine-label" class="telemetry-val">Tesseract + OpenCV</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Confidence</span>
+            <span id="confidence-val" class="telemetry-val highlight">96.4%</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Latency</span>
+            <span id="latency-val" class="telemetry-val highlight">— ms</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">API Status</span>
+            <span id="api-status-val" class="telemetry-val highlight">Standby</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Voice Synthesis</span>
+            <span id="voice-engine-val" class="telemetry-val highlight">Active (WebSpeech)</span>
+          </div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">Mic Input</span>
+            <span id="mic-status-val" class="telemetry-val">WebSpeech API</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- VERIFICATION MODAL OVERLAY -->
+  <div id="verification-modal" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-clipboard-check modal-icon"></i>
+          <h3>Verify OCR Extracted Clinical Data</h3>
+        </div>
+        <button type="button" id="modal-close-btn" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-intro">Review the extracted fields below before committing updates to the EMR clinical form:</p>
+        <pre id="json-preview" class="json-preview-box">{}</pre>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="modal-cancel-btn" class="btn-outline">Discard</button>
+        <button type="button" id="confirm-populate-btn" class="btn-primary">
+          <i class="fa-solid fa-check-double"></i> Confirm & Populate Form
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

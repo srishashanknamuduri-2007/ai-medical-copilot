@@ -714,7 +714,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let responseData = null;
         try {
-          const res = await fetch('http://localhost:8000/ocr/extract', {
+          const res = await fetch('https://ai-medical-copilot-ocr.onrender.com/ocr/extract', {
             method: 'POST',
             body: formData
           });
